@@ -1,4 +1,4 @@
-use anyhow::{Context, Result};
+use anyhow::Result;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
@@ -17,7 +17,7 @@ fn part2() -> Result<()> {
     let reader = BufReader::new(file);
 
     let mut total = 0;
-    for (index, line) in reader.lines().enumerate() {
+    for (_index, line) in reader.lines().enumerate() {
         let line = line?;
         let mut iter = line.split_whitespace();
 
@@ -56,7 +56,7 @@ fn part1() -> Result<()> {
     let reader = BufReader::new(file);
 
     let mut total = 0;
-    for (index, line) in reader.lines().enumerate() {
+    for (_index, line) in reader.lines().enumerate() {
         let line = line?;
         let mut iter = line.split_whitespace();
         let them = iter.next();

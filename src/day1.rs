@@ -14,7 +14,7 @@ pub fn run(part: u8) -> Result<()> {
 fn part2() -> Result<()> {
     println!("Running Day1::part2");
 
-    let file = File::open("./resources/day1_part1.txt")?;
+    let file = File::open("./resources/day1.txt").context("Could not read day1.txt")?;
     let reader = BufReader::new(file);
 
     let mut heap = BinaryHeap::new();
@@ -40,7 +40,7 @@ fn part2() -> Result<()> {
 fn part1() -> Result<()> {
     println!("Running Day1::part1");
 
-    let file = File::open("./resources/day1_part1.txt")?;
+    let file = File::open("./resources/day1.txt").context("Could not find day1.txt")?;
     let reader = BufReader::new(file);
 
     let mut max: u32 = 0;
