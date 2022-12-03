@@ -30,7 +30,7 @@ fn part2() -> Result<()> {
         }
     }
 
-    let total = heap.pop().unwrap() + heap.pop().unwrap() + heap.pop().unwrap();
+    let total: u32 = heap.into_sorted_vec().iter().take(3).sum();
 
     println!("The top 3 Elves are carrying {} calories.", total);
 
