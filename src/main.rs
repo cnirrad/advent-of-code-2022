@@ -4,6 +4,7 @@ use clap::Parser;
 mod day1;
 mod day2;
 mod day3;
+mod day4;
 
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about = None)]
@@ -21,6 +22,7 @@ fn main() -> Result<()> {
     match args.day {
         1 => day1::run(args.part),
         2 => day2::run(args.part),
-        _ => day3::run(args.part),
+        3 => day3::run(args.part),
+        _ => day4::run(args.part),
     }
 }
