@@ -87,7 +87,7 @@ fn item_priority(ch: char) -> u16 {
 
 #[cfg(test)]
 mod tests {
-    use crate::day3::{find_badge_in_group, find_dup, item_priority};
+    use crate::day03::{find_badge_in_group, find_dup, item_priority};
 
     #[test]
     fn test_item_priority() {

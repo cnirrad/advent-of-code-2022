@@ -150,7 +150,7 @@ fn adjacent((x1, y1): &(i32, i32), (x2, y2): &(i32, i32)) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use crate::day9::*;
+    use crate::day09::*;
 
     const EXAMPLE_1: &str = "R 4
 U 4

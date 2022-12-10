@@ -1,15 +1,16 @@
 use anyhow::Result;
 use clap::Parser;
 
-mod day1;
-mod day2;
-mod day3;
-mod day4;
-mod day5;
-mod day6;
-mod day7;
-mod day8;
-mod day9;
+mod day01;
+mod day02;
+mod day03;
+mod day04;
+mod day05;
+mod day06;
+mod day07;
+mod day08;
+mod day09;
+mod day10;
 mod utils;
 
 #[derive(Parser, Debug)]
@@ -26,14 +27,15 @@ fn main() -> Result<()> {
     let args = Args::parse();
 
     match args.day {
-        1 => day1::run(args.part),
-        2 => day2::run(args.part),
-        3 => day3::run(args.part),
-        4 => day4::run(args.part),
-        5 => day5::run(args.part),
-        6 => day6::run(args.part),
-        7 => day7::run(args.part),
-        8 => day8::run(args.part),
-        _ => day9::run(args.part),
+        1 => day01::run(args.part),
+        2 => day02::run(args.part),
+        3 => day03::run(args.part),
+        4 => day04::run(args.part),
+        5 => day05::run(args.part),
+        6 => day06::run(args.part),
+        7 => day07::run(args.part),
+        8 => day08::run(args.part),
+        9 => day09::run(args.part),
+        _ => day10::run(args.part),
     }
 }

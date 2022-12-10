@@ -321,7 +321,7 @@ fn find_most_scenic(lines: &str) -> Result<usize> {
 
 #[cfg(test)]
 mod tests {
-    use crate::day8::*;
+    use crate::day08::*;
 
     const EXAMPLE: &str = "30373\n25512\n65332\n33549\n35390";
 

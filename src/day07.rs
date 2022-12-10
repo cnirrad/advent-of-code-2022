@@ -130,7 +130,7 @@ impl TerminalOutput {
 
 #[cfg(test)]
 mod tests {
-    use crate::day7::*;
+    use crate::day07::*;
 
     #[test]
     fn test_change_dir() {

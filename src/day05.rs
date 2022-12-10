@@ -188,7 +188,7 @@ fn parse_instructions(stack_strs: &str) -> Result<Vec<MoveInstruction>> {
 
 #[cfg(test)]
 mod tests {
-    use crate::day5::*;
+    use crate::day05::*;
 
     #[test]
     fn test_can_read_file_without_err() {

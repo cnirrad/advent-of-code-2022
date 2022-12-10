@@ -152,7 +152,7 @@ fn read_file() -> Result<String> {
 
 #[cfg(test)]
 mod tests {
-    use crate::day6::*;
+    use crate::day06::*;
 
     #[test]
     fn test_can_read_file_without_err() {
