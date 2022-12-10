@@ -9,6 +9,8 @@ mod day5;
 mod day6;
 mod day7;
 mod day8;
+mod day9;
+mod utils;
 
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about = None)]
@@ -31,6 +33,7 @@ fn main() -> Result<()> {
         5 => day5::run(args.part),
         6 => day6::run(args.part),
         7 => day7::run(args.part),
-        _ => day8::run(args.part),
+        8 => day8::run(args.part),
+        _ => day9::run(args.part),
     }
 }
