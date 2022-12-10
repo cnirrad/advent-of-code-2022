@@ -33,10 +33,10 @@ impl RopeSimulation {
         RopeSimulation { knots, visited }
     }
 
-    fn simulate(&mut self, instructions: &Vec<String>) -> Result<()> {
+    fn simulate(&mut self, instructions: &[String]) -> Result<()> {
         let instructions: Vec<(&str, &str)> = instructions
             .iter()
-            .map(|i| i.split_once(" ").unwrap())
+            .map(|i| i.split_once(' ').unwrap())
             .collect();
 
         for (dir, steps) in instructions {
@@ -84,17 +84,17 @@ impl RopeSimulation {
                 let mut new_x = next.0;
                 let mut new_y = next.1;
 
-                if next.0 - x > 0 {
-                    new_x -= 1;
-                } else if next.0 - x < 0 {
-                    new_x += 1;
-                }
+                new_x += match (next.0 - x).cmp(&0) {
+                    std::cmp::Ordering::Greater => -1,
+                    std::cmp::Ordering::Less => 1,
+                    std::cmp::Ordering::Equal => 0,
+                };
 
-                if next.1 - y > 0 {
-                    new_y -= 1;
-                } else if next.1 - y < 0 {
-                    new_y += 1;
-                }
+                new_y += match (next.1 - y).cmp(&0) {
+                    std::cmp::Ordering::Greater => -1,
+                    std::cmp::Ordering::Less => 1,
+                    std::cmp::Ordering::Equal => 0,
+                };
 
                 self.move_knot(knot_idx + 1, new_x, new_y);
             }
@@ -182,7 +182,7 @@ U 20";
 
     #[test]
     fn test_example1_part1() {
-        let v: Vec<String> = EXAMPLE_1.split("\n").map(|s| s.to_owned()).collect();
+        let v: Vec<String> = EXAMPLE_1.split('\n').map(|s| s.to_owned()).collect();
 
         let mut sim = RopeSimulation::new(2);
         sim.simulate(&v).unwrap();
@@ -192,7 +192,7 @@ U 20";
 
     #[test]
     fn test_example1_part2() {
-        let v: Vec<String> = EXAMPLE_1.split("\n").map(|s| s.to_owned()).collect();
+        let v: Vec<String> = EXAMPLE_1.split('\n').map(|s| s.to_owned()).collect();
 
         let mut sim = RopeSimulation::new(10);
         sim.simulate(&v).unwrap();
@@ -202,7 +202,7 @@ U 20";
 
     #[test]
     fn test_example2_part2() {
-        let v: Vec<String> = EXAMPLE_2.split("\n").map(|s| s.to_owned()).collect();
+        let v: Vec<String> = EXAMPLE_2.split('\n').map(|s| s.to_owned()).collect();
 
         let mut sim = RopeSimulation::new(10);
         sim.simulate(&v).unwrap();

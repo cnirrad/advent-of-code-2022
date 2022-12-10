@@ -46,12 +46,12 @@ struct ForestMap {
 
 impl ForestMap {
     fn new(lines: &str) -> Self {
-        let lines: Vec<String> = lines.split("\n").map(|s| s.to_owned()).collect();
+        let lines: Vec<String> = lines.split('\n').map(|s| s.to_owned()).collect();
         let width = lines.get(0).unwrap().len();
 
         ForestMap {
             forest: lines,
-            width: width,
+            width,
         }
     }
 
@@ -168,10 +168,10 @@ impl Display for Visibility {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         for (i, b) in self.m.iter().enumerate() {
             if i % self.width == 0 {
-                writeln!(f, "")?;
+                writeln!(f)?;
             }
 
-            write!(f, "{}", if *b { 1 } else { 0 })?;
+            write!(f, "{}", i32::from(*b))?;
         }
 
         Ok(())
@@ -231,8 +231,8 @@ fn read_file() -> Result<String> {
 }
 
 fn count_visible(lines: &str) -> Result<usize> {
-    let lines: Vec<&str> = lines.split("\n").collect();
-    let width = lines.get(0).unwrap().len();
+    let lines: Vec<&str> = lines.split('\n').collect();
+    let width = lines.first().unwrap().len();
     let height = lines.len();
     //let outside_edges = (width * 2) + (height * 2) - 4;
 
@@ -310,7 +310,7 @@ fn count_visible(lines: &str) -> Result<usize> {
 }
 
 fn find_most_scenic(lines: &str) -> Result<usize> {
-    let forest = ForestMap::new(&lines);
+    let forest = ForestMap::new(lines);
 
     let best_score = (0..forest.total_trees())
         .map(|i| forest.scenic_score(i))

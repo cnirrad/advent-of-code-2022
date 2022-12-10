@@ -46,7 +46,7 @@ fn part1() -> Result<()> {
 }
 
 fn parse_line(line: &str) -> Result<(RangeInclusive<u32>, RangeInclusive<u32>)> {
-    let (a1, a2) = line.split_once(",").unwrap();
+    let (a1, a2) = line.split_once(',').unwrap();
     let r1 = parse_range(a1)?;
     let r2 = parse_range(a2)?;
 
@@ -54,7 +54,7 @@ fn parse_line(line: &str) -> Result<(RangeInclusive<u32>, RangeInclusive<u32>)> 
 }
 
 fn parse_range(range_str: &str) -> Result<RangeInclusive<u32>> {
-    let (start_str, end_str) = range_str.split_once("-").unwrap();
+    let (start_str, end_str) = range_str.split_once('-').unwrap();
 
     let start: u32 = start_str.parse()?;
     let end: u32 = end_str.parse()?;
@@ -94,8 +94,8 @@ mod tests {
         let r1 = RangeInclusive::new(1, 10);
         let r2 = RangeInclusive::new(5, 7);
 
-        assert_eq!(true, contains(&r1, &r2));
-        assert_eq!(true, contains(&r2, &r1));
+        assert!(contains(&r1, &r2));
+        assert!(contains(&r2, &r1));
     }
 
     #[test]
@@ -103,8 +103,8 @@ mod tests {
         let r1 = RangeInclusive::new(1, 10);
         let r2 = RangeInclusive::new(15, 27);
 
-        assert_eq!(false, contains(&r1, &r2));
-        assert_eq!(false, contains(&r2, &r1));
+        assert!(!contains(&r1, &r2));
+        assert!(!contains(&r2, &r1));
     }
 
     #[test]
@@ -112,8 +112,8 @@ mod tests {
         let r1 = RangeInclusive::new(1, 10);
         let r2 = RangeInclusive::new(5, 17);
 
-        assert_eq!(true, overlap(&r1, &r2));
-        assert_eq!(true, overlap(&r2, &r1));
+        assert!(overlap(&r1, &r2));
+        assert!(overlap(&r2, &r1));
     }
 
     #[test]

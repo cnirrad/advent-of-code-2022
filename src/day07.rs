@@ -121,7 +121,7 @@ impl TerminalOutput {
         } else {
             self.current_path.push(dir.to_string());
             let path = self.current_path.join("/");
-            if let Some(_) = self.dir_sizes.insert(path, 0) {
+            if self.dir_sizes.insert(path, 0).is_some() {
                 panic!("Changing dir to {} and found a duplicate.", dir)
             }
         }

@@ -19,3 +19,5 @@ Here are a few things that I've learned about Rust in this process:
    group. The `batching` method was very useful for this, although after
    the fact I found `chunks` may have been better since that takes a static
    number whereas `batching` could be more dynamic.
+3. Turn on Clippy in Visual Study Code by setting `rust-analyzer.checkOnSave.command` to 
+   `clippy`. This provides way better suggestions than the default.

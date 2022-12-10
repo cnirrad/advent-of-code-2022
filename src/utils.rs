@@ -13,7 +13,7 @@ pub fn read_file(path: &str) -> Result<String> {
 pub fn read_file_as_string_vec(path: &str) -> Result<Vec<String>> {
     let lines = read_file(path)?;
 
-    let v: Vec<String> = lines.split("\n").map(|s| s.to_owned()).collect();
+    let v: Vec<String> = lines.split('\n').map(|s| s.to_owned()).collect();
 
     Ok(v)
 }

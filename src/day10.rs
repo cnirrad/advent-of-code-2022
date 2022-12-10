@@ -41,7 +41,7 @@ fn part2() -> Result<String> {
 }
 
 fn determine_signal_strength(instructions: &str) -> i32 {
-    let v: Vec<&str> = instructions.split("\n").collect();
+    let v: Vec<&str> = instructions.split('\n').collect();
     let mut signal_strength = 0;
     let mut cycle = 1;
     let mut current_v = 1;
@@ -59,7 +59,7 @@ fn determine_signal_strength(instructions: &str) -> i32 {
         }
 
         if !inst.starts_with("noop") {
-            let (_, param) = inst.split_once(" ").unwrap();
+            let (_, param) = inst.split_once(' ').unwrap();
             let count: i32 = param.parse().unwrap();
 
             cycle += 1;
@@ -94,10 +94,8 @@ impl Screen {
         let mut pixels: Vec<Vec<char>> = Vec::new();
 
         for _ in 0..6 {
-            let mut row: Vec<char> = Vec::new();
-            for _ in 0..40 {
-                row.push('.');
-            }
+            let row = vec!['.'; 40];
+
             pixels.push(row);
         }
 
@@ -108,7 +106,7 @@ impl Screen {
     }
 
     fn process(&mut self, instructions: &str) -> Result<()> {
-        let instructions: Vec<&str> = instructions.split("\n").collect();
+        let instructions: Vec<&str> = instructions.split('\n').collect();
 
         let mut cycle = 0;
 
@@ -129,7 +127,7 @@ impl Screen {
     }
 
     fn move_sprite(&mut self, instruction: &str) {
-        let (_, param) = instruction.split_once(" ").unwrap();
+        let (_, param) = instruction.split_once(' ').unwrap();
         let count: i32 = param.parse().unwrap();
 
         self.sprite_pos += count;
@@ -164,7 +162,7 @@ impl Display for Screen {
             for col in row {
                 write!(f, "{}", col)?;
             }
-            writeln!(f, "")?;
+            writeln!(f)?;
         }
 
         Ok(())
@@ -351,7 +349,7 @@ noop   ";
     #[test]
     fn test_example_part2() {
         let mut screen = Screen::new();
-        screen.process(&EXAMPLE).unwrap();
+        screen.process(EXAMPLE).unwrap();
 
         let expected = "##..##..##..##..##..##..##..##..##..##..
 ###...###...###...###...###...###...###.
