@@ -12,6 +12,7 @@ mod day08;
 mod day09;
 mod day10;
 mod day11;
+mod day12;
 mod utils;
 
 #[derive(Parser, Debug)]
@@ -38,6 +39,7 @@ fn main() -> Result<()> {
         8 => day08::run(args.part),
         9 => day09::run(args.part),
         10 => day10::run(args.part),
-        _ => day11::run(args.part),
+        11 => day11::run(args.part),
+        _ => day12::run(args.part),
     }
 }

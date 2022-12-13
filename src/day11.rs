@@ -1,5 +1,3 @@
-use std::{collections::LinkedList, fs::read};
-
 use anyhow::{bail, Context, Result};
 use itertools::Itertools;
 
@@ -17,6 +15,36 @@ pub fn run(part: u8) -> Result<()> {
     Ok(())
 }
 
+fn part1(lines: &str) -> Result<u64> {
+    println!("Running day11::part1");
+
+    let mut game = MonkeyGame::parse_input(lines)?;
+
+    for _ in 0..20 {
+        game.play_round()?;
+    }
+
+    let monkey_business = game.calc_monkey_business();
+    println!("Monkey business = {}", monkey_business);
+
+    Ok(monkey_business)
+}
+
+fn part2(lines: &str) -> Result<u64> {
+    println!("Running day11::part2");
+
+    let mut game = MonkeyGame::parse_input(lines)?;
+
+    for _ in 0..10000 {
+        game.play_round2()?;
+    }
+
+    let monkey_business = game.calc_monkey_business();
+    println!("Monkey business = {}", monkey_business);
+
+    Ok(monkey_business)
+}
+
 #[derive(Debug, PartialEq)]
 enum Operation {
     Add(String, String),
@@ -24,17 +52,17 @@ enum Operation {
 }
 
 impl Operation {
-    fn execute(&self, old: i32) -> Result<i32> {
+    fn execute(&self, old: i64) -> Result<i64> {
         match self {
             Operation::Add(lhs, rhs) => {
-                let lhs: i32 = if lhs == "old" { old } else { lhs.parse()? };
-                let rhs: i32 = if rhs == "old" { old } else { rhs.parse()? };
+                let lhs: i64 = if lhs == "old" { old } else { lhs.parse()? };
+                let rhs: i64 = if rhs == "old" { old } else { rhs.parse()? };
 
                 Ok(lhs + rhs)
             }
             Operation::Mul(lhs, rhs) => {
-                let lhs: i32 = if lhs == "old" { old } else { lhs.parse()? };
-                let rhs: i32 = if rhs == "old" { old } else { rhs.parse()? };
+                let lhs: i64 = if lhs == "old" { old } else { lhs.parse()? };
+                let rhs: i64 = if rhs == "old" { old } else { rhs.parse()? };
 
                 Ok(lhs * rhs)
             }
@@ -44,12 +72,12 @@ impl Operation {
 
 struct Monkey {
     id: usize,
-    items: Vec<i32>,
+    items: Vec<i64>,
 
     operation: Operation,
 
     // the amount to test if the item is divisible by
-    test: i32,
+    test: i64,
 
     on_true: usize,
     on_false: usize,
@@ -89,7 +117,7 @@ impl Monkey {
             .find(':')
             .with_context(|| format!("Expected ':' while processing starting items in {}", line))
             .unwrap();
-        let items: Vec<i32> = line[idx + 1..]
+        let items: Vec<i64> = line[idx + 1..]
             .split(',')
             .map(|s| s.trim().parse().unwrap())
             .collect();
@@ -129,7 +157,7 @@ impl Monkey {
     }
 
     /// Returns a vector of items thrown - first element is which monkey it is to and the second is the item
-    fn take_turn(&mut self) -> Result<Vec<(usize, i32)>> {
+    fn take_turn(&mut self) -> Result<Vec<(usize, i64)>> {
         let mut items_thrown = Vec::new();
 
         println!("Monkey {}", self.id);
@@ -168,29 +196,17 @@ impl Monkey {
     }
 
     /// Like take turn, but this is part 2
-    fn take_turn2(&mut self) -> Result<Vec<(usize, i32)>> {
+    fn take_turn_part2(&mut self, limit: i64) -> Result<Vec<(usize, i64)>> {
         let mut items_thrown = Vec::new();
 
-        println!("Monkey {}", self.id);
         for item in &self.items {
-            println!("  Monkey inspects an item with worry level {}", item);
+            let mut new_level = self.operation.execute(*item)?;
 
-            let new_level = self.operation.execute(*item)?;
-            println!("    Worry level is {:?} to {}", self.operation, new_level);
+            new_level %= limit;
 
             if new_level % self.test == 0 {
-                println!("    Current level is divisible by {}", self.test);
-                println!(
-                    "    Item with worry level {} is thrown to monkey {}",
-                    new_level, self.on_true
-                );
                 items_thrown.push((self.on_true, new_level));
             } else {
-                println!("    Current level is not divisible by {}", self.test);
-                println!(
-                    "    Item with worry level {} is thrown to monkey {}",
-                    new_level, self.on_false
-                );
                 items_thrown.push((self.on_false, new_level));
             }
             self.inspected += 1;
@@ -200,43 +216,15 @@ impl Monkey {
         Ok(items_thrown)
     }
 
-    fn catch(&mut self, item: i32) {
+    fn catch(&mut self, item: i64) {
         self.items.push(item);
     }
 }
-
-fn part1(lines: &str) -> Result<usize> {
-    println!("Running day11::part1");
-
-    let mut system = MonkeyGame::parse_input(lines)?;
-
-    for _ in 0..20 {
-        system.play_round()?;
-    }
-
-    let monkey_business = system.calc_monkey_business();
-    println!("Monkey business = {}", monkey_business);
-
-    Ok(monkey_business)
-}
-
-fn part2(lines: &str) -> Result<usize> {
-    println!("Running day11::part2");
-
-    let mut system = MonkeyGame::parse_input(lines)?;
-
-    for _ in 0..1000 {
-        system.play_round2()?;
-    }
-
-    let monkey_business = system.calc_monkey_business();
-    println!("Monkey business = {}", monkey_business);
-
-    Ok(monkey_business)
-}
-
 struct MonkeyGame {
     monkeys: Vec<Monkey>,
+
+    // max limit, used for part 2
+    limit: i64,
 }
 
 impl MonkeyGame {
@@ -250,7 +238,11 @@ impl MonkeyGame {
             if let Ok(m) = read_result {
                 results.push(m);
             } else {
-                return Ok(MonkeyGame { monkeys: results });
+                let limit = results.iter().map(|m| m.test).product();
+                return Ok(MonkeyGame {
+                    monkeys: results,
+                    limit,
+                });
             }
         }
     }
@@ -269,7 +261,7 @@ impl MonkeyGame {
 
     fn play_round2(&mut self) -> Result<()> {
         for id in 0..self.monkeys.len() {
-            let items_thrown = self.monkeys[id].take_turn2()?;
+            let items_thrown = self.monkeys[id].take_turn_part2(self.limit)?;
 
             for (monkey, item) in items_thrown {
                 self.monkeys[monkey].catch(item);
@@ -279,15 +271,14 @@ impl MonkeyGame {
         Ok(())
     }
 
-    fn calc_monkey_business(&self) -> usize {
+    fn calc_monkey_business(&self) -> u64 {
         self.monkeys
             .iter()
-            .map(|x| x.inspected)
+            .map(|x| x.inspected as u64)
             .sorted()
             .rev()
             .take(2)
-            .reduce(|a, b| a * b)
-            .unwrap()
+            .product()
     }
 }
 
@@ -326,6 +317,22 @@ Monkey 3:
     #[test]
     fn test_part1_example() {
         assert_eq!(10605, part1(EXAMPLE).unwrap());
+    }
+
+    #[test]
+    fn test_part2_example() {
+        assert_eq!(2713310158, part2(EXAMPLE).unwrap());
+    }
+    #[test]
+    fn test_part1() {
+        let lines = read_file("./resources/day11.txt").unwrap();
+        assert_eq!(113220, part1(&lines).unwrap());
+    }
+
+    #[test]
+    fn test_part2() {
+        let lines = read_file("./resources/day11.txt").unwrap();
+        assert_eq!(30599555965, part2(&lines).unwrap());
     }
 
     #[test]
