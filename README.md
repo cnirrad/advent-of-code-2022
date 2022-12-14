@@ -21,3 +21,9 @@ Here are a few things that I've learned about Rust in this process:
    number whereas `batching` could be more dynamic.
 3. Turn on Clippy in Visual Study Code by setting `rust-analyzer.checkOnSave.command` to 
    `clippy`. This provides way better suggestions than the default.
+4. Day 13 seemed like a parsing nightmare at first glance, but instead of trying
+   to parse this by hand I turned to [nom](https://github.com/Geal/nom). I was very 
+   surprised at how easy the parsing turned out to be. It also helped that I was reviewing
+   [Eric Burden's AOC Solution](https://github.com/ericwburden/advent_of_code_2022) to the
+   Day 11 problem, which used Nom to parse the input. I also took a page from him with 
+   creating a module for the day instead of craming everything into a single file.

@@ -11,5 +11,6 @@ authors = ["Darrin Collins <darrin.collins@veeva.com>"]
 anyhow = "1.0"
 clap = { version = "4.0.29", features = ["derive"] }
 itertools = "0.10.5"
+nom = "7.1.1"
 petgraph = "0.6.2"
 regex = "1"
