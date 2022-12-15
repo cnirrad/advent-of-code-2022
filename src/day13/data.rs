@@ -43,17 +43,16 @@ impl Ord for PacketData {
     }
 }
 
-#[allow(unused_imports)]
 mod parser {
     use super::*;
     use anyhow::{anyhow, Result};
     use nom::{
         branch::alt,
         bytes::complete::tag,
-        character::complete::{multispace1, newline, one_of, space1, u32},
-        combinator::{map, value},
+        character::complete::{newline, u32},
+        combinator::map,
         multi::{separated_list0, separated_list1},
-        sequence::{delimited, preceded, separated_pair, terminated, tuple},
+        sequence::{delimited, terminated},
         Finish, IResult,
     };
 
